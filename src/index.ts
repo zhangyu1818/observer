@@ -1,2 +1,2 @@
 export { observable } from './observable';
-export { observe } from './observer';
+export { observe, unobserve } from './observer';
