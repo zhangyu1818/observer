@@ -1,4 +1,4 @@
-import baseHandler from './base-handle';
+import baseHandler from './base-handler';
 
 const getHandler = () => {
   return baseHandler;
