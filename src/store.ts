@@ -52,9 +52,16 @@ export function registerReactionForOperation(
 export function getReactionsForOperation({ target, key, type }: OperationWithType) {
   const reactionsForRaw = connectionStore.get(target)!;
   const reactionsForKey = new Set<ReactionFunction>();
-  addReactionsForKey(reactionsForKey, reactionsForRaw, key);
 
-  if (type === 'add' || type === 'delete') {
+  if (type === 'clear') {
+    reactionsForRaw.forEach((_, key) => {
+      addReactionsForKey(reactionsForKey, reactionsForRaw, key);
+    });
+  } else {
+    addReactionsForKey(reactionsForKey, reactionsForRaw, key);
+  }
+
+  if (type === 'add' || type === 'delete' || type === 'clear') {
     const iterationKey = Array.isArray(target) ? 'length' : ITERATION_KEY;
     addReactionsForKey(reactionsForKey, reactionsForRaw, iterationKey);
   }

@@ -16,5 +16,5 @@ export interface Operation {
 }
 
 export interface OperationWithType extends Operation {
-  type: 'add' | 'set' | 'delete';
+  type: 'add' | 'set' | 'delete' | 'clear';
 }

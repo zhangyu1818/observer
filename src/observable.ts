@@ -5,7 +5,7 @@ import getHandler from './handlers';
 
 function createObservable<T extends Raw>(raw: T) {
   // 捕捉器，get、set
-  const handler = getHandler();
+  const handler = getHandler(raw);
 
   const observable = new Proxy(raw, handler);
 

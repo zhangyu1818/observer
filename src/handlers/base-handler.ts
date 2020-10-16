@@ -1,13 +1,7 @@
 import { Key, Observable, Raw } from '../interface';
-import { hasOwnProperty, ITERATION_KEY, proxyToRaw, rawToProxy } from '../internals';
-import {
-  hasRunningReaction,
-  queueReactionsForOperation,
-  registerRunningReactionForOperation,
-} from '../reaction';
-import { observable } from '../observable';
-
-const isObject = (obj) => typeof obj === 'object' && obj !== null;
+import { hasOwnProperty, ITERATION_KEY, proxyToRaw } from '../internals';
+import { queueReactionsForOperation, registerRunningReactionForOperation } from '../reaction';
+import { findObservable, isObject } from '../utils';
 
 const wellKnownSymbols = new Set<symbol>(
   Object.getOwnPropertyNames(Symbol)
@@ -31,17 +25,7 @@ function get(target: Raw, key: Key, receiver: Observable) {
   // 收集依赖
   registerRunningReactionForOperation({ target, key });
 
-  // 如果访问的result是对象，则转为observable
-  const observableResult = rawToProxy.get(result);
-  // 如果有正在运行的观察函数才将新对象转为observable对象
-  if (hasRunningReaction() && isObject(result)) {
-    if (observableResult) {
-      return observableResult;
-    }
-    return observable(result);
-  }
-
-  return observableResult || result;
+  return findObservable(result);
 }
 
 function set(target: Raw, key: Key, value: any, receiver: Observable) {

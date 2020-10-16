@@ -6,3 +6,4 @@ export const proxyToRaw = new WeakMap<Observable, Raw>();
 export const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 export const ITERATION_KEY = Symbol('iteration key');
+export const UNUSED_TEMP_KEY = Symbol('unused temp key');
