@@ -53,6 +53,7 @@ export function getReactionsForOperation({ target, key, type }: OperationWithTyp
   const reactionsForRaw = connectionStore.get(target)!;
   const reactionsForKey = new Set<ReactionFunction>();
 
+  // clear的情况要将所有key都通知一下
   if (type === 'clear') {
     reactionsForRaw.forEach((_, key) => {
       addReactionsForKey(reactionsForKey, reactionsForRaw, key);
@@ -61,6 +62,7 @@ export function getReactionsForOperation({ target, key, type }: OperationWithTyp
     addReactionsForKey(reactionsForKey, reactionsForRaw, key);
   }
 
+  // 如果是数组类型，通知length，如果是Map或Set，通知自定义的标示迭代的ITERATION_KEY
   if (type === 'add' || type === 'delete' || type === 'clear') {
     const iterationKey = Array.isArray(target) ? 'length' : ITERATION_KEY;
     addReactionsForKey(reactionsForKey, reactionsForRaw, iterationKey);
